@@ -10,18 +10,16 @@
 \details{
 }
 \author{
-\packageAuthor{jvPCA}
-
-Maintainer: \packageMaintainer{jvPCA}
+  Jochen Voss <voss@seehuhn.de>
 }
 \keyword{
   package
   multivariate
 }
 \seealso{
-  \code{\link{prcomp}}
-  \code{\link{toPC}}
-  \code{\link{fromPC}}
+  \code{\link{jvPCA}}; alternative implementation are
+  \code{\link{prcomp}},
+  \code{\link{princomp}}
 }
 \examples{
   pc <- jvPCA(iris[,1:4], scale=TRUE)

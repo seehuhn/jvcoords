@@ -5,9 +5,8 @@
 \description{Performs a principal components analysis on the given data
   matrix and returns the results as an object of class \code{jvPCA}.}
 \usage{
-jvPCA(x, n.comp, scale = FALSE, compute.scores = TRUE)
+  jvPCA(x, n.comp, scale = FALSE, compute.scores = TRUE)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{A data matrix, rows correspond to samples, columns to variables.}
   \item{n.comp}{How many principal components to compute.}
@@ -16,7 +15,10 @@ jvPCA(x, n.comp, scale = FALSE, compute.scores = TRUE)
     basis).}
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+  This function performs Principal Component Analysis (PCA) on the
+  data.  The mean of each variable is always subtracted before
+  the PCA is performed and, if \code{scale} is set, the data
+  will also be rescaled to unit variance.
 }
 \value{
   An object of class \code{jvPCA}, as a list with the following
@@ -29,12 +31,9 @@ jvPCA(x, n.comp, scale = FALSE, compute.scores = TRUE)
   \item{scale}{the pre-scaling used for each column}
 }
 \author{Jochen Voss}
-\note{
-%%  ~~further notes~~
-}
 \seealso{
-  \code{\link{prcomp}}
-  \code{\link{princomp}}
+  \code{\link{toPC}}
+  \code{\link{fromPC}}
 }
 \examples{
   pc <- jvPCA(iris[,1:4])
