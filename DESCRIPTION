@@ -1,0 +1,13 @@
+Package: jvPCA
+Type: Package
+Title: Perform Principal Component Analysis (PCA)
+Version: 1.0
+Date: 2017-06-23
+Author: Jochen Voss
+Maintainer: Jochen Voss <voss@seehuhn.de>
+Description:
+  This package implements an alternative to the prcomp() function.
+  The main advantage over prcomp() is that the jvPCA package provides
+  functions to convert between the original basis and the principal
+  component basis.
+License: GPL-2
