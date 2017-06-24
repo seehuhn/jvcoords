@@ -8,7 +8,7 @@
   jvPCA(x, n.comp, scale = FALSE, compute.scores = TRUE)
 }
 \arguments{
-  \item{x}{A data matrix, rows correspond to samples, columns to variables.}
+  \item{x}{A data matrix, rows are samples, columns are variables.}
   \item{n.comp}{How many principal components to compute.}
   \item{scale}{Whether to standardise the columns before doing PCA.}
   \item{compute.scores}{Whether to compute the scores (i.e. x in the new
@@ -16,9 +16,14 @@
 }
 \details{
   This function performs Principal Component Analysis (PCA) on the
-  data.  The mean of each variable is always subtracted before
-  the PCA is performed and, if \code{scale} is set, the data
+  data.  Variables are always centred before
+  the PCA is performed and, if \code{scale} is set, the variables
   will also be rescaled to unit variance.
+
+  If \code{compute.scores} is set to \code{FALSE}, only the information
+  required for the \code{toPC()} and \code{fromPC()} to work is stored
+  in the returned \code{jvPCA} object; otherwise the scores will
+  be stored in the \code{$scores} field of the \code{jvPCA} object.
 }
 \value{
   An object of class \code{jvPCA}, as a list with the following
@@ -30,11 +35,15 @@
   \item{mean}{the column means of the original data}
   \item{scale}{the pre-scaling used for each column}
 }
-\author{Jochen Voss}
+\author{
+  Jochen Voss <voss@seehuhn.de>
+}
 \seealso{
-  \code{\link{toPC}}
+  \code{\link{toPC}},
   \code{\link{fromPC}}
 }
 \examples{
-  pc <- jvPCA(iris[,1:4])
+  pc <- jvPCA(iris[,1:4], scale=TRUE)
+  pc
+  head(pc$scores)
 }

@@ -43,11 +43,11 @@ jvPCA <- function(x, n.comp, scale=FALSE, compute.scores=TRUE) {
 	pca
 }
 
-print.jvPCA <- function(pca) {
-	cat("cummulative fraction of variance explained:\n")
-	print(cumsum(pca$var) / pca$total.var)
+print.jvPCA <- function(x, ...) {
+	cat("cumulative fraction of variance explained:\n")
+	print(cumsum(x$var) / x$total.var)
 	cat("\nloadings:\n")
-	print(pca$loadings)
+	print(x$loadings)
 }
 
 toPC <- function(pca, x) {

@@ -1,12 +1,11 @@
 \name{toPC}
 \alias{toPC}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Convert data from the original space to the PCA space}
 \description{Convert data into the principal component basis: this
   subtracts the original mean for each variable, applies the scaling (if
-  any) to each variable and then computes the PCA scores.}
+  any) to each variable, and then computes the PCA scores.}
 \usage{
-toPC(pca, x)
+  toPC(pca, x)
 }
 \arguments{
   \item{pca}{A jvPCA object.}
@@ -15,43 +14,25 @@ toPC(pca, x)
     the original data.}
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+  This function implements to formula to compute the PCA scores,
+  so that the scores for additional data can be computed.  If all
+  components are included in \code{pca} (i.e., if no dimension reduction
+  is performed), this operation can be reverted using \code{fromPC()}.
+
+  When applied to the original data \code{x}, the output of
+  \code{toPC(pca, x)} equals \code{pca$scores}.
 }
 \value{The input x expressed in the principal component basis, i.e. the
   PCA scores.}
-\references{
-%% ~put references to the literature/web site here ~
-}
 \author{
-%%  ~~who you are~~
+  Jochen Voss <voss@seehuhn.de>
 }
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+  \code{\link{jvPCA}},
+  \code{\link{fromPC}}
 }
 \examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (pca, x)
-{
-    if (is.null(dim(x))) {
-	stopifnot(length(x) == length(pca$mean))
-	(t(pca$loadings) \%*\% ((x - pca$mean)/pca$scale))[, 1]
-    }
-    else {
-	t((t(x) - pca$mean)/pca$scale) \%*\% pca$loadings
-    }
-  }
+  pc <- jvPCA(iris[, 1:4], scale=TRUE)
+  y <- toPC(pc, iris[, 1:4])
+  all.equal(pc$scores, y)
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }% use one of  RShowDoc("KEYWORDS")
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
