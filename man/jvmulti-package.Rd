@@ -1,8 +1,8 @@
-\name{jvPCA-package}
-\alias{jvPCA-package}
+\name{jvmulti-package}
+\alias{jvmulti-package}
 \docType{package}
 \title{
-  \packageTitle{jvPCA}
+  \packageTitle{jvmulti}
 }
 \description{
   This package implements an alternative to the \code{prcomp()} function.

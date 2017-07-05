@@ -1,6 +1,6 @@
 #! /usr/bin/env Rscript
 
-library(jvPCA)
+library(jvmulti)
 
 set.seed(1)
 X1 <- matrix(rnorm(990), nrow=33, ncol=3)

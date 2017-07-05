@@ -5,10 +5,10 @@
   data, by inverting the PCA, inverting the scaling and the adding the
   mean.}
 \usage{
-  fromPC(pca, y)
+  fromPC(trans, y)
 }
 \arguments{
-  \item{pca}{A \code{jvPCA} object.}
+  \item{trans}{A \code{jvPCA} object.}
   \item{y}{Either a vector where the length is the number of principal
     components, or a matrix where the same number of columns equals the
     number of principal components.}

@@ -5,10 +5,10 @@
   subtracts the original mean for each variable, applies the scaling (if
   any) to each variable, and then computes the PCA scores.}
 \usage{
-  toPC(pca, x)
+  toPC(trans, x)
 }
 \arguments{
-  \item{pca}{A jvPCA object.}
+  \item{trans}{A jvPCA object.}
   \item{x}{Either a vector where the length is the number of the
     original variables, or a matrix with the same number of columns as
     the original data.}

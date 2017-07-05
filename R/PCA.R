@@ -50,20 +50,20 @@ print.jvPCA <- function(x, ...) {
 	print(x$loadings)
 }
 
-toPC <- function(pca, x) {
+toPC <- function(trans, x) {
 	if (is.null(dim(x))) {
-		stopifnot(length(x) == length(pca$mean))
-		(t(pca$loadings) %*% ((x - pca$mean) / pca$scale))[,1]
+		stopifnot(length(x) == length(trans$mean))
+		(t(trans$loadings) %*% ((x - trans$mean) / trans$scale))[,1]
 	} else {
-		t((t(x) - pca$mean) / pca$scale) %*% pca$loadings
+		t((t(x) - trans$mean) / trans$scale) %*% trans$loadings
 	}
 }
 
-fromPC <- function(pca, y) {
+fromPC <- function(trans, y) {
 	if (is.null(dim(y))) {
-		(pca$loadings %*% y)[,1] * pca$scale + pca$mean
+		(trans$loadings %*% y)[,1] * trans$scale + trans$mean
 	} else {
-		# y = t((t(x) - pca$mean) / pca$scale) %*% pca$loadings
-		t((pca$loadings %*% t(y)) * pca$scale + pca$mean)
+		# y = t((t(x) - trans$mean) / trans$scale) %*% trans$loadings
+		t((trans$loadings %*% t(y)) * trans$scale + trans$mean)
 	}
 }
