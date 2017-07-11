@@ -1,5 +1,3 @@
-source("../whiten.R")
-
 # Estimate the entropy of a continuous distribution from data.
 # Based on the estimate (13) in "Nonparametric entropy estimation:
 # an overview" by J. Beirlant et al.
@@ -90,5 +88,5 @@ jvICA <- function(X, n.comp, maxit=5000) {
   res
 }
 
-s <- jvICA(iris[,1:4])
-pairs(s$x, col=iris$Species)
+#s <- jvICA(iris[,1:4])
+#pairs(s$x, col=iris$Species)

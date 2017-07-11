@@ -10,7 +10,7 @@ X4 <- matrix(1:6, 3, 2)
 
 for (x in list(X1, X2, X3, X4)) {
   pc <- jvPCA(x)
-  stopifnot(max(abs(colMeans(pc$scores))) < 1e-10)
-  stopifnot(isTRUE(all.equal(toPC(pc, x), pc$scores)))
-  stopifnot(isTRUE(all.equal(x, fromPC(pc, pc$scores))))
+  stopifnot(max(abs(colMeans(pc$scores))) < 1e-14)
+  stopifnot(isTRUE(all.equal(toCoords(pc, x), pc$scores)))
+  stopifnot(isTRUE(all.equal(x, fromCoords(pc, pc$scores))))
 }

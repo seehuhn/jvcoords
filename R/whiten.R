@@ -6,7 +6,7 @@ whiten <- function(x) {
 	stopifnot(n > 1 && p >= 1)
 	n.comp <- min(n-1, p)
 
-	col.mean <- apply(x, 2, mean)
+	col.mean <- colMeans(x)
 
 	z <- t(t(x) - col.mean)
 	s <- La.svd(z, nu=0, nv=n.comp)

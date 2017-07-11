@@ -1,5 +1,8 @@
-importFrom("stats", sd)
+export(coords, toCoords, fromCoords)
+
 export(whiten, fromWhite, toWhite)
+
 export(jvPCA, fromPC, toPC)
-export(jvICA, entropy)
 S3method(print, jvPCA)
+
+export(jvICA, entropy)
