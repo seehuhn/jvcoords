@@ -23,16 +23,17 @@ jvPCA <- function(x, n.comp, scale=FALSE, compute.scores=TRUE) {
 	loadings <- s$u
 	rownames(loadings) <- colnames(x)
 	colnames(loadings) <- paste0('PC', 1:ncol(loadings))
-	pca <- coords(loadings, pre.sub = col.mean, pre.div = col.sd)
+	trans <- coords(loadings, pre.sub = col.mean, pre.div = col.sd)
+	trans$name <- "PCA"
 
 	pc.var <- s$d^2 / (n-1)
-	pca$var <- pc.var[1:n.comp]
-	names(pca$var) <- paste0('PC', 1:length(pca$var))
-	pca$total.var <- sum(pc.var)
+	trans$var <- pc.var[1:n.comp]
+	names(trans$var) <- paste0('PC', 1:length(trans$var))
+	trans$total.var <- sum(pc.var)
 
 	if (compute.scores) {
-		pca$scores <- crossprod(zt, pca$loadings)
+		trans$scores <- crossprod(zt, trans$loadings)
 	}
 
-	pca
+	trans
 }

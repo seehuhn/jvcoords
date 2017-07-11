@@ -9,8 +9,11 @@ X3 <- matrix(rnorm(999), nrow=999, ncol=1)
 X4 <- matrix(1:6, 3, 2)
 
 for (x in list(X1, X2, X3, X4)) {
-  pc <- jvPCA(x)
-  stopifnot(max(abs(colMeans(pc$scores))) < 1e-14)
-  stopifnot(isTRUE(all.equal(toCoords(pc, x), pc$scores)))
-  stopifnot(isTRUE(all.equal(x, fromCoords(pc, pc$scores))))
+	for (scale in c(TRUE, FALSE)) {
+		pc <- jvPCA(x, scale = scale)
+		stopifnot(max(abs(colMeans(pc$scores))) < 1e-14)
+		stopifnot(which.max(apply(pc$scores, 2, var)) == 1)
+		stopifnot(isTRUE(all.equal(toCoords(pc, x), pc$scores)))
+		stopifnot(isTRUE(all.equal(x, fromCoords(pc, pc$scores))))
+	}
 }

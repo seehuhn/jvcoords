@@ -39,3 +39,23 @@ fromCoords <- function(trans, y) {
 		t(xt * trans$pre.div + trans$pre.sub)
 	}
 }
+
+print.coords <- function(x, ...) {
+	if (! is.null(x$name)) {
+		cat(x$name, ": ", sep="")
+	}
+	cat("map p =", nrow(x$loadings), "coordinates to q =",
+		ncol(x$loadings), "coordinates\n")
+
+	if (! is.null(x$var)) {
+		cat("\n")
+		info <- rbind(
+			`standard deviation`=sqrt(x$var),
+			variance=x$var,
+			`cum. variance fraction`=cumsum(x$var / x$total.var)
+		)
+		print(info)
+	}
+
+	invisible(x)
+}

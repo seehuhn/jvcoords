@@ -11,27 +11,27 @@ X4 <- matrix(1:6, 3, 2)
 for (x in list(X1, X2, X3, X4)) {
 	s <- whiten(x)
 
-	stopifnot(max(abs(colMeans(s$w))) < 1e-10)
-	stopifnot(max(abs(cov(s$w) - diag(ncol(s$w)))) < 1e-10)
+	stopifnot(max(abs(colMeans(s$scores))) < 1e-10)
+	stopifnot(max(abs(cov(s$scores) - diag(ncol(s$scores)))) < 1e-10)
 
-	stopifnot(max(abs(toWhite(s, x) - s$w)) < 1e-10)
+	stopifnot(max(abs(toCoords(s, x) - s$scores)) < 1e-10)
 	cat(dim(x), "to mat OK\n")
 
-	stopifnot(max(abs(toWhite(s, x[1,]) - s$w[1,])) < 1e-10)
+	stopifnot(max(abs(toCoords(s, x[1,]) - s$scores[1,])) < 1e-10)
 	cat(dim(x), "to vec OK\n")
 
-	stopifnot(max(abs(fromWhite(s, s$w) - x)) < 1e-10)
+	stopifnot(max(abs(fromCoords(s, s$scores) - x)) < 1e-10)
 	cat(dim(x), "from mat OK\n")
 
-	stopifnot(max(abs(fromWhite(s, s$w[1,]) - x[1,])) < 1e-10)
+	stopifnot(max(abs(fromCoords(s, s$scores[1,]) - x[1,])) < 1e-10)
 	cat(dim(x), "from vec OK\n")
 
 	q <- length(s$inv)
 	Y <- matrix(rnorm(100*q), 100, q)
 
-	stopifnot(max(abs(Y - toWhite(s, fromWhite(s, Y)))) < 1e-10)
+	stopifnot(max(abs(Y - toCoords(s, fromCoords(s, Y)))) < 1e-10)
 	cat(dim(x), "from&to mat OK\n")
 
-	stopifnot(max(abs(Y[1,] - toWhite(s, fromWhite(s, Y[1,])))) < 1e-10)
+	stopifnot(max(abs(Y[1,] - toCoords(s, fromCoords(s, Y[1,])))) < 1e-10)
 	cat(dim(x), "from&to vec OK\n")
 }
