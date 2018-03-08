@@ -27,5 +27,5 @@
 }
 \examples{
   pc <- jvPCA(iris[,1:4], scale=TRUE)
-  plot(pc$scores[,1], pc$scores[,2], col=iris$Species)
+  plot(pc$y[,1], pc$y[,2], col=iris$Species)
 }

@@ -1,5 +1,5 @@
 ---
-title: "Notes for the JvMult Package"
+title: "Notes for the JvMulti Package"
 output:
   html_notebook:
     number_sections: yes
@@ -10,6 +10,19 @@ output:
 
 ```{r}
 library(microbenchmark)
+```
+
+## Speed Impact of Memory Layout
+
+Operating on columns seems noticeably faster than operating on the
+rows of a matrix.
+
+```{r}
+n <- 100
+x <- matrix(rnorm(n*n), n, n)
+microbenchmark(
+	colSums(x),
+	rowSums(x))
 ```
 
 ## Operating on the Columns of a Matrix
@@ -70,10 +83,12 @@ microbenchmark(
 
 The best way to compute column averages of a matrix seems to be `colMeans()`:
 ```{r}
-x <- matrix(rnorm(10000), 100, 100)
+n <- 100
+x <- matrix(rnorm(n*n), n, n)
 microbenchmark(
-	colMeans(x), 
-	apply(x, 2, mean), 
+	colMeans(x),
+	colSums(x) / n,
+	apply(x, 2, mean),
 	check = function(x) {isTRUE(all.equal(x[[1]], x[[2]]))})
 ```
 
@@ -82,7 +97,7 @@ n <- 100
 x <- matrix(rnorm(n*n), n, n)
 microbenchmark(
 	apply(x, 2, sd),
-	sqrt(colSums(x^2) / (n-1) - colSums(x)^2 / n / (n-1)), 
+	sqrt(colSums(x^2) / (n-1) - colSums(x)^2 / n / (n-1)),
 	check = function(x) {isTRUE(all.equal(x[[1]], x[[2]]))})
 ```
 
@@ -90,7 +105,8 @@ Column means and standard deviations can also be found by inspecting the
 corresponding attributes in the output of the `scale()` function
 
 ```{r}
-x <- matrix(rnorm(10000), 100, 100)
+n <- 100
+x <- matrix(rnorm(n*n), n, n)
 microbenchmark(
 	scale(x, center=TRUE, scale=FALSE),
 	scale(x, center=FALSE, scale=TRUE),
@@ -151,7 +167,8 @@ Experimentally, it seems that the only case which makes a difference is the
 case where both `nu=0` and `nv=0`:
 
 ```{r}
-X <- matrix(rnorm(10000), 100, 100)
+n <- 100
+X <- matrix(rnorm(n*n), n, n)
 microbenchmark(
 	La.svd(X),
 	La.svd(X, nu=0),
@@ -166,39 +183,48 @@ microbenchmark(
 
 # Standardizing Data
 
+In this section we discuss methods the shift and scale each individual
+variable of a multivariate data set so that each variable has mean $0$
+and varinance $1$.
+
 ## Methods
 
 It seems that the `scale()` function is not an efficient way to standardise
 data:
 
 ```{r}
-x <- matrix(rnorm(10000), 100, 100)
+n <- 100
+x <- matrix(rnorm(n*n), n, n)
+
 std1 <- function(x) {
-	scale(x)
+    scale(x)
 }
 std2 <- function(x) {
-	n <- nrow(x)
-	col.mean <- colMeans(x)
-	s <- sqrt(colSums(x^2) / (n-1) - colSums(x)^2 / n / (n-1))
-	t((t(x) - col.mean) / s)
+    n <- nrow(x)
+    col.mean <- colMeans(x)
+    s <- sqrt(colSums(x^2) / (n-1) - colSums(x)^2 / n / (n-1))
+    t((t(x) - col.mean) / s)
 }
 std3 <- function(x) {
-	n <- nrow(x)
-	col.mean <- colMeans(x)
-	s <- sqrt((colSums(x^2) - col.mean^2*n) / (n-1))
-	t((t(x) - col.mean) / s)
+    n <- nrow(x)
+    col.mean <- colMeans(x)
+    s <- sqrt((colSums(x^2) - col.mean^2*n) / (n-1))
+    t((t(x) - col.mean) / s)
 }
 std4 <- function(x) {
-	col.mean <- colMeans(x)
-	xt <- t(x) - col.mean
-	
-	n <- ncol(xt)
-	s <- sqrt(rowSums(xt^2) / (n-1))
-	t(xt / s)
+    col.mean <- colMeans(x)
+    xt <- t(x) - col.mean
+
+    n <- ncol(xt)
+    s <- sqrt(rowSums(xt^2) / (n-1))
+    t(xt / s)
 }
 check.fn <- function(values) {
-  all(sapply(values[-1], function(x) isTRUE(all.equal(values[[1]], x,
-  													check.attributes = FALSE))))
+    all(sapply(values[-1],
+	       function(x) {
+		   isTRUE(all.equal(values[[1]], x,
+				    check.attributes = FALSE))
+	       }))
 }
 
 microbenchmark(std1(x), std2(x), std3(x), std4(x), times=500L, check = check.fn)
@@ -212,11 +238,12 @@ the standardised data.
 ### Setup
 
 ```{r}
-x <- matrix(rnorm(10000), 100, 100)
+n <- 100
+x <- matrix(rnorm(n*n), n, n)
 
-col.mean <- colMeans(x)
 n <- nrow(x)
-s <- sqrt(colSums(x^2) / (n-1) - colSums(x)^2 / n / (n-1))
+col.mean <- colMeans(x)
+s <- sqrt((colSums(x^2) - col.mean^2*n) / (n-1))
 y <- t((t(x) - col.mean) / s)
 ```
 
@@ -251,10 +278,10 @@ ways to whiten $X$.
 
 ## Full Rank Case
 
-Here we use an approach to compute $Y = C^{-1/2}
-(X - \bar X)$, where $X - \bar X$ denotes the matrix X with the column means
-subtracted from each column, and $C = \mathrm{Cov}(X)$:  Using SVD
-we can write $X - \bar X$ as $X - \bar X = U D V^\top$ and thus we get
+Here we use an approach to compute $Y = C^{-1/2} (X - \bar X)$, where
+$X - \bar X$ denotes the matrix X with the column means subtracted
+from each column, and $C = \mathrm{Cov}(X)$: Using SVD we can write $X
+- \bar X$ as $X - \bar X = U D V^\top$ and thus we get
 $$
 C
 = \mathrm{Cov}(X - \bar X)
@@ -344,7 +371,7 @@ If $q = \mathrm{rank}(X - \bar X) < p$, and in particular if $n \leq p$,
 the data is contained in an affine sub-space of dimension $q \leq \min(n-1, p)$,
 and in order to have identity covariance, the data must be projected down into a
 space of dimension $q$.  We can find $q$ as the number of non-zero entries
-of `s$d`.  
+of `s$d`.
 
 ```{r}
 n <- 5
@@ -377,7 +404,8 @@ the space of the whitened data.
 ### Setup
 
 ```{r}
-x <- matrix(rnorm(10000), 100, 100)
+n <- 100
+x <- matrix(rnorm(n*n), n, n)
 
 col.mean <- colMeans(x)
 x.centred <- t(t(x) - col.mean)
@@ -431,7 +459,8 @@ the space of the whitened data.
 ### Setup
 
 ```{r}
-x <- matrix(rnorm(10000), 100, 100)
+n <- 100
+x <- matrix(rnorm(n*n), n, n)
 
 col.mean <- colMeans(x)
 x.centred <- t(t(x) - col.mean)
@@ -482,3 +511,68 @@ stopifnot(isTRUE(all.equal(x1, x[1,])))
 
 
 # ICA
+
+## Entropy Estimation
+
+The following function to estimate entropy from a sample is based on
+the estimate (13) in 'Nonparametric entropy estimation: an overview' by
+J. Beirlant et al., 2001.
+
+```{r}
+entropy <- function(x, m) {
+    x <- sort(x)
+    n <- length(x)
+    d <- x[(m + 1):n] - x[1:(n - m)]
+    sum(log(d * (n / m))) / n - digamma(m) + log(m)
+}
+```
+
+```{r}
+n <- 1000
+
+mu <- 0
+sigma <- 1
+target <- 0.5 * log(2 * pi * exp(1) * sigma^2)
+
+mm <- 2:5
+mse <- numeric(length(mm))
+
+K <- 1000
+for (j in seq_along(mm)) {
+    m <- mm[j]
+    e <- numeric(K)
+    for (k in 1:K) {
+	x <- rnorm(n, mu, sigma)
+	e[k] <- entropy(x, m) - target
+    }
+    mse[j] <- mean(e^2)
+}
+plot(mm, mse, type="l")
+```
+
+```{r}
+# 1000 7
+# 2000 7-10
+# 3000 9
+# 4000 11-13
+n <- 4000
+
+a <- -1
+b <- +1
+target <- log(b - a)
+
+mm <- 2:20
+mse <- numeric(length(mm))
+
+K <- 1000
+for (j in seq_along(mm)) {
+	m <- mm[j]
+	e <- numeric(K)
+	for (k in 1:K) {
+		x <- runif(n, a, b)
+		e[k] <- entropy(x, m) - target
+	}
+	mse[j] <- mean(e^2)
+}
+plot(mm, mse, type = "l")
+```
