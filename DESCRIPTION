@@ -1,13 +1,14 @@
 Package: jvmulti
 Type: Package
 Title: Principal Component Analysis (PCA) and whitening
-Version: 1.0
-Date: 2017-06-25
+Version: 0.95
+Date: 2018-03-09
 Author: Jochen Voss
 Maintainer: Jochen Voss <voss@seehuhn.de>
 Description:
-  This package implements an alternative to the prcomp() function.
-  The main advantage over prcomp() is that the jvPCA package provides
-  functions to convert between the original basis and the principal
-  component basis.
+  The jvmulti package provides functions to standardize and whiten
+  data, and an implementation of Principal Component Analysis (PCA).
+  All three transformations are implemented as a common class coords
+  which allows to easily convert data from and to the new coordinate
+  system.
 License: GPL-2

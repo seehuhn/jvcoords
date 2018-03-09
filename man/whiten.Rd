@@ -7,7 +7,7 @@
   whiten(x, compute.scores = TRUE)
 }
 \arguments{
-  \item{x}{A data matrix, rows are samples, columns are variables.}
+  \item{x}{A data matrix, rows are observations, columns are variables.}
   \item{compute.scores}{Whether to compute the scores (i.e. \code{x} in the new
     basis).}
 }
@@ -33,5 +33,5 @@
 \examples{
   w <- whiten(iris[,1:4])
   colMeans(w$y)
-  round(cov(w$y), 2)
+  round(cov(w$y), 3)
 }

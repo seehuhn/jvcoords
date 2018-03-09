@@ -1,6 +1,6 @@
 \name{jvPCA}
 \alias{jvPCA}
-\title{function to perform Principal Component Analysis (PCA)}
+\title{perform Principal Component Analysis (PCA)}
 \description{Performs a principal components analysis on the given data
   matrix and returns the results as an object of class \code{coords}.}
 \usage{
@@ -9,7 +9,7 @@
 \arguments{
   \item{x}{A data matrix, rows are observations, columns are variables.}
   \item{n.comp}{How many principal components to compute.}
-  \item{scale}{Whether to standardise the columns before doing PCA.}
+  \item{scale}{Whether to standardize the columns before doing PCA.}
   \item{compute.scores}{Whether to compute the scores (i.e. x in the new
     basis).}
 }
@@ -23,6 +23,13 @@
   required for the \code{toPC()} and \code{fromPC()} to work is stored
   in the returned \code{coords} object; otherwise the scores will
   be stored in the \code{$y} field of the \code{coords} object.
+
+  The \code{jvPCA()} function is an alternative to
+  the \code{prcomp()} command from the standard library.
+  The main advantage of \code{jvPCA()} is that the \code{coords}
+  class provides
+  functions to convert between the original basis and the principal
+  component basis.
 }
 \value{
   An object of class \code{coords}, as a list with the following
@@ -38,10 +45,11 @@
   Jochen Voss <voss@seehuhn.de>
 }
 \seealso{
-  \code{\link{coords}}
+  \code{\link{coords}};
+  alternative implementations: \code{\link{prcomp}}, \code{\link{princomp}}
 }
 \examples{
   pc <- jvPCA(iris[,1:4], scale=TRUE)
   pc
-  head(pc$y)
+  plot(pc$y[,1], pc$y[,2], col=iris$Species)
 }

@@ -189,8 +189,8 @@ and varinance $1$.
 
 ## Methods
 
-It seems that the `scale()` function is not an efficient way to standardise
-data:
+It seems that the `scale()` function is not an efficient way to
+standardize data:
 
 ```{r}
 n <- 100
@@ -220,7 +220,7 @@ std4 <- function(x) {
     t(xt / s)
 }
 check.fn <- function(values) {
-    all(sapply(values[-1],
+    all(sapply(values,
 	       function(x) {
 		   isTRUE(all.equal(values[[1]], x,
 				    check.attributes = FALSE))
@@ -232,8 +232,8 @@ microbenchmark(std1(x), std2(x), std3(x), std4(x), times=500L, check = check.fn)
 
 ## Transform
 
-We list the code to transform (additional) data to and from the space of
-the standardised data.
+We list the code to transform (additional) data to and from the space
+of the standardized data.
 
 ### Setup
 
@@ -508,71 +508,38 @@ x1 <- as.vector(t(vt) %*% y1 + col.mean)
 stopifnot(isTRUE(all.equal(x1, x[1,])))
 ```
 
+# Speed Comparison
 
-
-# ICA
-
-## Entropy Estimation
-
-The following function to estimate entropy from a sample is based on
-the estimate (13) in 'Nonparametric entropy estimation: an overview' by
-J. Beirlant et al., 2001.
+In this section we load the `jvmulti` library and compare the speed
+of the functions provided to the speed of alternative implementations from
+the standard libary.
 
 ```{r}
-entropy <- function(x, m) {
-    x <- sort(x)
-    n <- length(x)
-    d <- x[(m + 1):n] - x[1:(n - m)]
-    sum(log(d * (n / m))) / n - digamma(m) + log(m)
-}
+library(jvmulti)
 ```
 
+## Standardizing
+
 ```{r}
-n <- 1000
-
-mu <- 0
-sigma <- 1
-target <- 0.5 * log(2 * pi * exp(1) * sigma^2)
-
-mm <- 2:5
-mse <- numeric(length(mm))
-
-K <- 1000
-for (j in seq_along(mm)) {
-    m <- mm[j]
-    e <- numeric(K)
-    for (k in 1:K) {
-	x <- rnorm(n, mu, sigma)
-	e[k] <- entropy(x, m) - target
-    }
-    mse[j] <- mean(e^2)
+x <- iris[,1:4]
+check.fn <- function(values) {
+    all(sapply(values,
+               function(x) {
+                   isTRUE(all.equal(values[[1]], x,
+                                    check.attributes = FALSE))
+               }))
 }
-plot(mm, mse, type="l")
+microbenchmark({m<-standardize(x);m$y}, scale(x), check = check.fn)
 ```
 
+
+## Whitening
+
+Are there alternatives in the standard library?
+
+## PCA
+
 ```{r}
-# 1000 7
-# 2000 7-10
-# 3000 9
-# 4000 11-13
-n <- 4000
-
-a <- -1
-b <- +1
-target <- log(b - a)
-
-mm <- 2:20
-mse <- numeric(length(mm))
-
-K <- 1000
-for (j in seq_along(mm)) {
-	m <- mm[j]
-	e <- numeric(K)
-	for (k in 1:K) {
-		x <- runif(n, a, b)
-		e[k] <- entropy(x, m) - target
-	}
-	mse[j] <- mean(e^2)
-}
-plot(mm, mse, type = "l")
+x <- iris[,1:4]
+microbenchmark(jvPCA(x), prcomp(x), princomp(x))
 ```

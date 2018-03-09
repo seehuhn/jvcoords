@@ -1,7 +1,6 @@
 export(coords, toCoords, fromCoords)
 S3method(print, coords)
 
+export(standardize)
 export(whiten)
 export(jvPCA)
-
-export(jvICA, entropy)
