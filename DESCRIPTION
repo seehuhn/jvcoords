@@ -11,4 +11,4 @@ Description:
   All three transformations are implemented as a common class coords
   which allows to easily convert data from and to the new coordinate
   system.
-License: GPL-2
+License: GPL-3
