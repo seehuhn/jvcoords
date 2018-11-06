@@ -1,10 +1,13 @@
 ---
-title: "Notes for the JvMulti Package"
+title: "Notes for the JvCoords Package"
 output:
   html_notebook:
     number_sections: yes
     toc: yes
 ---
+
+These notes contain some of the things I considered when writing the JvCoords
+package.  They are likely not of general interest.
 
 # Linear Algebra in R
 
@@ -393,7 +396,7 @@ round(cov(Y), 3)
 ```
 
 The code shown in the above listing also works for the full rank case,
-and we will use (a variant of) this code in our package.
+and we use (a variant of) this code in the package.
 
 
 ## Transform
@@ -510,12 +513,12 @@ stopifnot(isTRUE(all.equal(x1, x[1,])))
 
 # Speed Comparison
 
-In this section we load the `jvmulti` library and compare the speed
-of the functions provided to the speed of alternative implementations from
+In this section we load the `jvcoords` library and compare the speed
+of out functions to the speed of alternative implementations from
 the standard libary.
 
 ```{r}
-library(jvmulti)
+library(jvcoords)
 ```
 
 ## Standardizing

@@ -1,6 +1,6 @@
 #! /usr/bin/env Rscript
 
-library("jvmulti")
+library("jvcoords")
 
 mu <- c(1, 2, 3)
 sigma <- c(4, 5, 6)

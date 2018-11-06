@@ -1,11 +1,11 @@
-\name{jvmulti-package}
-\alias{jvmulti-package}
+\name{jvcoords-package}
+\alias{jvcoords-package}
 \docType{package}
 \title{
-  \packageTitle{jvmulti}
+  \packageTitle{jvcoords}
 }
 \description{
-  The jvmulti package provides functions to standardize and whiten
+  The jvcoords package provides functions to standardize and whiten
   data, and an implementation of Principal Component Analysis (PCA).
   All three transformations are implemented as a common class
   \verb{coords} which allows to easily convert data from and to the
@@ -19,6 +19,8 @@
 }
 \keyword{
   package
+  math
+  array
   multivariate
 }
 \seealso{

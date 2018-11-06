@@ -1,12 +1,12 @@
-Package: jvmulti
+Package: jvcoords
 Type: Package
 Title: Principal Component Analysis (PCA) and whitening
-Version: 0.95
+Version: 0.96
 Date: 2018-03-09
 Author: Jochen Voss
 Maintainer: Jochen Voss <voss@seehuhn.de>
 Description:
-  The jvmulti package provides functions to standardize and whiten
+  The jvcoords package provides functions to standardize and whiten
   data, and an implementation of Principal Component Analysis (PCA).
   All three transformations are implemented as a common class coords
   which allows to easily convert data from and to the new coordinate
