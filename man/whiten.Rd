@@ -16,8 +16,8 @@
   that the transformed data has mean 0 and identity covariance matrix.
 
   If \code{compute.scores} is set to \code{FALSE}, only the
-  information required for the \code{toCoords()} and
-  \code{fromCoords()} to work is stored in the returned \code{coords}
+  information required for the \code{ToCoords()} and
+  \code{FromCoords()} to work is stored in the returned \code{coords}
   object; otherwise the scores (transformed data) will be stored in
   the \code{$y} field of the \code{coords} object.
 }

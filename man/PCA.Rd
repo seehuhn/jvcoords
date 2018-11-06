@@ -1,10 +1,10 @@
-\name{jvPCA}
-\alias{jvPCA}
+\name{PCA}
+\alias{PCA}
 \title{perform Principal Component Analysis (PCA)}
 \description{Performs a principal components analysis on the given data
   matrix and returns the results as an object of class \code{coords}.}
 \usage{
-  jvPCA(x, n.comp, scale = FALSE, compute.scores = TRUE)
+  PCA(x, n.comp, scale = FALSE, compute.scores = TRUE)
 }
 \arguments{
   \item{x}{A data matrix, rows are observations, columns are variables.}
@@ -24,9 +24,9 @@
   in the returned \code{coords} object; otherwise the scores will
   be stored in the \code{$y} field of the \code{coords} object.
 
-  The \code{jvPCA()} function is an alternative to
+  The \code{PCA()} function is an alternative to
   the \code{prcomp()} command from the standard library.
-  The main advantage of \code{jvPCA()} is that the \code{coords}
+  The main advantage of \code{PCA()} is that the \code{coords}
   class provides
   functions to convert between the original basis and the principal
   component basis.
@@ -49,7 +49,7 @@
   alternative implementations: \code{\link{prcomp}}, \code{\link{princomp}}
 }
 \examples{
-  pc <- jvPCA(iris[,1:4], scale=TRUE)
+  pc <- PCA(iris[,1:4], scale=TRUE)
   pc
   plot(pc$y[,1], pc$y[,2], col=iris$Species)
 }

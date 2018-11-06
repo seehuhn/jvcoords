@@ -1,4 +1,5 @@
 #! /usr/bin/env Rscript
+
 # jvcoords - implement various coordinate transforms (e.g. PCA, whitening).
 # https://github.com/seehuhn/jvcoords
 #
@@ -17,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-
 library(jvcoords)
 
 set.seed(1)
@@ -28,10 +28,10 @@ X4 <- matrix(1:6, 3, 2)
 
 for (x in list(X1, X2, X3, X4)) {
     for (scale in c(TRUE, FALSE)) {
-        pc <- jvPCA(x, scale = scale)
+        pc <- PCA(x, scale = scale)
         stopifnot(max(abs(colMeans(pc$y))) < 1e-14)
         stopifnot(which.max(apply(pc$y, 2, var)) == 1)
-        stopifnot(isTRUE(all.equal(toCoords(pc, x), pc$y)))
-        stopifnot(isTRUE(all.equal(x, fromCoords(pc, pc$y))))
+        stopifnot(isTRUE(all.equal(ToCoords(pc, x), pc$y)))
+        stopifnot(isTRUE(all.equal(x, FromCoords(pc, pc$y))))
     }
 }

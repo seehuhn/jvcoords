@@ -1,4 +1,5 @@
 #! /usr/bin/env Rscript
+
 # jvcoords - implement various coordinate transforms (e.g. PCA, whitening).
 # https://github.com/seehuhn/jvcoords
 #
@@ -32,23 +33,23 @@ for (x in list(X1, X2, X3, X4)) {
     stopifnot(max(abs(colMeans(s$y))) < 1e-10)
     stopifnot(max(abs(apply(s$y, 2, var) - 1)) < 1e-10)
 
-    stopifnot(max(abs(toCoords(s, x) - s$y)) < 1e-10)
+    stopifnot(max(abs(ToCoords(s, x) - s$y)) < 1e-10)
     cat(dim(x), "to mat OK\n")
 
-    stopifnot(max(abs(toCoords(s, x[1, ]) - s$y[1, ])) < 1e-10)
+    stopifnot(max(abs(ToCoords(s, x[1, ]) - s$y[1, ])) < 1e-10)
     cat(dim(x), "to vec OK\n")
 
-    stopifnot(max(abs(fromCoords(s, s$y) - x)) < 1e-10)
+    stopifnot(max(abs(FromCoords(s, s$y) - x)) < 1e-10)
     cat(dim(x), "from mat OK\n")
 
-    stopifnot(max(abs(fromCoords(s, s$y[1, ]) - x[1, ])) < 1e-10)
+    stopifnot(max(abs(FromCoords(s, s$y[1, ]) - x[1, ])) < 1e-10)
     cat(dim(x), "from vec OK\n")
 
     Y <- matrix(rnorm(100 * s$q), 100, s$q)
 
-    stopifnot(max(abs(Y - toCoords(s, fromCoords(s, Y)))) < 1e-10)
+    stopifnot(max(abs(Y - ToCoords(s, FromCoords(s, Y)))) < 1e-10)
     cat(dim(x), "from&to mat OK\n")
 
-    stopifnot(max(abs(Y[1, ] - toCoords(s, fromCoords(s, Y[1, ])))) < 1e-10)
+    stopifnot(max(abs(Y[1, ] - ToCoords(s, FromCoords(s, Y[1, ])))) < 1e-10)
     cat(dim(x), "from&to vec OK\n")
 }

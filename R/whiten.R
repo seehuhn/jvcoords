@@ -23,26 +23,28 @@ whiten <- function(x, compute.scores = TRUE) {
     p <- ncol(x)
     n.comp <- min(n - 1, p)
 
-    col.mean <- colMeans(x)
+    trfm <- coords(p, "whiten")
 
-    zt <- t(x) - col.mean
-    s <- La.svd(zt, nu = n.comp, nv = 0)
+    col.mean <- colMeans(x)
+    xt <- t(x) - col.mean
+    trfm <- AppendTrfm(trfm, "add", -col.mean)
+
+    s <- La.svd(xt, nu = n.comp, nv = 0)
     eps <- 1e-14
     cols <- which(s$d[seq_len(n.comp)] >= eps)
 
     loadings <- s$u[, cols, drop = FALSE]
     rownames(loadings) <- colnames(x)[cols]
-    colnames(loadings) <- paste0("W", 1:ncol(loadings))
+    colnames(loadings) <- paste0("W", seq.int(ncol(loadings)))
+    trfm <- AppendTrfm(trfm, "orth", loadings)
 
-    inv <- sqrt(n - 1)/s$d[cols]
+    inv <- sqrt(n - 1) / s$d[cols]
     names(inv) <- rownames(loadings)
-
-    trans <- coords(loadings, pre.sub = col.mean, post.mul = inv)
-    trans$name <- "whiten"
+    trfm <- AppendTrfm(trfm, "mult", inv)
 
     if (compute.scores) {
-        trans$y <- t(crossprod(trans$loadings, zt) * inv)
+        trfm$y <- t(crossprod(loadings, xt) * inv)
     }
 
-    trans
+    trfm
 }

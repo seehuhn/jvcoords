@@ -12,7 +12,7 @@
   new coordinate system.
 
   See the documentation for \code{standardize()}, \code{whiten()},
-  and \code{jvPCA()} for information on how to use this package.
+  and \code{PCA()} for information on how to use this package.
 }
 \author{
   Jochen Voss <voss@seehuhn.de>
@@ -26,6 +26,6 @@
 \seealso{
   \code{\link{standardize}},
   \code{\link{whiten}},
-  \code{\link{jvPCA}},
+  \code{\link{PCA}},
   \code{\link{coords}}
 }

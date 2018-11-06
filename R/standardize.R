@@ -16,18 +16,24 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-standardize <- function(x) {
+standardize <- function(x, compute.scores = TRUE) {
     x <- as.matrix(x)
 
     n <- nrow(x)
     p <- ncol(x)
     n.comp <- min(n - 1, p)
 
-    col.mean <- colMeans(x)
-    s <- sqrt((colSums(x^2) - col.mean^2*n) / (n-1))
-    trans <- coords(diag(1, p, p), pre.sub = col.mean, pre.div = s)
-    trans$name <- "standardize"
-    trans$y <- t((t(x) - col.mean) / s)
+    trfm <- coords(p, "standardize")
 
-    trans
+    col.mean <- colMeans(x)
+    trfm <- AppendTrfm(trfm, "add", -col.mean)
+
+    col.sd <- sqrt((colSums(x^2) - col.mean^2 * n)/(n - 1))
+    trfm <- AppendTrfm(trfm, "mult", 1 / col.sd)
+
+    if (compute.scores) {
+        trfm$y <- t((t(x) - col.mean) / col.sd)
+    }
+
+    trfm
 }

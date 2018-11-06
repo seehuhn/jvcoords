@@ -6,8 +6,8 @@ output:
     toc: yes
 ---
 
-These notes contain some of the things I considered when writing the JvCoords
-package.  They are likely not of general interest.
+These notes contain some of the considerations I made, when writing the
+JvCoords package.  These notes are likely not of general interest.
 
 # Linear Algebra in R
 
@@ -514,7 +514,7 @@ stopifnot(isTRUE(all.equal(x1, x[1,])))
 # Speed Comparison
 
 In this section we load the `jvcoords` library and compare the speed
-of out functions to the speed of alternative implementations from
+of our functions to the speed of alternative implementations from
 the standard libary.
 
 ```{r}
@@ -532,17 +532,22 @@ check.fn <- function(values) {
                                     check.attributes = FALSE))
                }))
 }
-microbenchmark({m<-standardize(x);m$y}, scale(x), check = check.fn)
+microbenchmark(jvcoords={m<-standardize(x);m$y}, 
+               scale(x), check = check.fn)
 ```
 
 
 ## Whitening
 
-Are there alternatives in the standard library?
+```{r}
+loadNamespace("whitening")
+x <- as.matrix(iris[,1:4])
+microbenchmark(jvcoords=whiten(x), whitening=whitening::whiten(x))
+```
 
 ## PCA
 
 ```{r}
 x <- iris[,1:4]
-microbenchmark(jvPCA(x), prcomp(x), princomp(x))
+microbenchmark(PCA(x), prcomp(x), princomp(x), times=1000L)
 ```

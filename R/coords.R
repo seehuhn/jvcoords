@@ -16,71 +16,70 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-coords <- function(loadings=NULL, pre.sub = 0, pre.div = 1, post.mul = 1) {
-    if (! is.null(loadings)) {
-        p <- nrow(loadings)
-        q <- ncol(loadings)
-    } else {
-        if (length(pre.sub) > 1) {
-            p <- length(pre.sub)
-        } else if (length(pre.div) > 1) {
-            p <- length(pre.div)
-        } else if (length(post.mul) > 1) {
-            p <- length(post.mul)
-        } else {
-            stop("cannot infer p and q")
-        }
-        q <- p
-    }
-    stopifnot(length(pre.sub) == 1 || length(pre.sub) == p)
-    stopifnot(length(pre.div) == 1 || length(pre.div) == p)
-    stopifnot(length(post.mul) == 1 || length(post.mul) == q)
-    res <- list(loadings = loadings, p = p, q = q,
-        pre.sub = pre.sub, pre.div = pre.div, post.mul = post.mul)
+coords <- function(p, name=NULL) {
+    res <- list(name=name, p=p, q=p, y=NULL, cmds=list())
     class(res) <- "coords"
     res
 }
 
-toCoords <- function(trans, x) {
-    if (is.null(dim(x))) {
-        stopifnot(length(x) == trans$p)
-        x <- (x - trans$pre.sub) / trans$pre.div
-        if (is.null(trans$loadings)) {
-            y <- x
-        } else {
-            y <- (x %*% trans$loadings)[1,]
-        }
-        y * trans$post.mul
+AppendTrfm <- function(trfm, op=c("add", "mult", "orth"), val) {
+    op <- match.arg(op)
+    if (op == "orth") {
+        trfm$q <- ncol(val)
+        cmd <- list(op, val)
     } else {
-        xt <- (t(x) - trans$pre.sub) / trans$pre.div
-        if (is.null(trans$loadings)) {
-            yt <- xt
-        } else {
-            yt <- crossprod(trans$loadings, xt)
-        }
-        t(yt * trans$post.mul)
+        cmd <- list(op, val)
     }
+    trfm$cmds[[length(trfm$cmds)+1]] <- cmd
+    trfm
 }
 
-fromCoords <- function(trans, y) {
-    if (is.null(dim(y))) {
-        stopifnot(length(y) == trans$q)
-        y <- y / trans$post.mul
-        if (is.null(trans$loadings)) {
-            x <- y
-        } else {
-            x <- (trans$loadings %*% y)[, 1]
+ToCoords <- function(trfm, x) {
+    if (is.null(dim(x))) {
+        stopifnot(length(x) == trfm$p)
+        for (cmd in trfm$cmds) {
+            val <- cmd[[2]]
+            x <- switch(cmd[[1]],
+                        add = x + val,
+                        mult = x * val,
+                        orth = (x %*% val)[1, ])
         }
-        x * trans$pre.div + trans$pre.sub
     } else {
-        yt <- t(y) / trans$post.mul
-        if (is.null(trans$loadings)) {
-            xt <- yt
-        } else {
-            xt <- trans$loadings %*% yt
+        xt <- t(x)
+        for (cmd in trfm$cmds) {
+            val <- cmd[[2]]
+            xt <- switch(cmd[[1]],
+                         add = xt + val,
+                         mult = xt * val,
+                         orth = crossprod(val, xt))
         }
-        t(xt * trans$pre.div + trans$pre.sub)
+        x <- t(xt)
     }
+    x
+}
+
+FromCoords <- function(trfm, y) {
+    if (is.null(dim(y))) {
+        stopifnot(length(y) == trfm$q)
+        for (cmd in rev(trfm$cmds)) {
+            val <- cmd[[2]]
+            y <- switch(cmd[[1]],
+                        add = y - val,
+                        mult = y / val,
+                        orth = (val %*% y)[, 1])
+        }
+    } else {
+        yt <- t(y)
+        for (cmd in rev(trfm$cmds)) {
+            val <- cmd[[2]]
+            yt <- switch(cmd[[1]],
+                         add = yt - val,
+                         mult = yt / val,
+                         orth = val %*% yt)
+        }
+        y <- t(yt)
+    }
+    y
 }
 
 print.coords <- function(x, ...) {
@@ -93,8 +92,8 @@ print.coords <- function(x, ...) {
     if (!is.null(x$var)) {
         cat("\n")
         info <- rbind(`standard deviation` = sqrt(x$var),
-            variance = x$var,
-            `cum. variance fraction` = cumsum(x$var/x$total.var))
+                      variance = x$var,
+                      `cum. variance fraction` = cumsum(x$var/x$total.var))
         print(info)
     }
 

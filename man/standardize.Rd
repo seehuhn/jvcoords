@@ -4,16 +4,24 @@
 \description{Standardizes each column of the data and returns the
   results as an object of class \code{coords}.}
 \usage{
-  standardize(x)
+  standardize(x, compute.scores = TRUE)
 }
 \arguments{
   \item{x}{A data matrix, rows are observations, columns are variables.}
+  \item{compute.scores}{Whether to compute the scores (i.e. x in the new
+    basis).}
 }
 \details{
   This function standardizes the columns of \code{x} by subtracting
   the mean of each column and then dividing by the standard devition.
   The transformed data is stored in the \code{$y} field of the
   returned \code{coords} object.
+
+  If \code{compute.scores} is set to \code{FALSE}, only the
+  information required for the \code{ToCoords()} and
+  \code{FromCoords()} to work is stored in the returned \code{coords}
+  object; otherwise the scores (transformed data) will be stored in
+  the \code{$y} field of the \code{coords} object.
 }
 \value{
   An object of class \code{coords}.
