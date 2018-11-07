@@ -22,7 +22,10 @@
   the \code{$y} field of the \code{coords} object.
 }
 \value{
-  An object of class \code{coords}.
+  An object of class \code{coords}, with the following
+  additional components added:
+  \item{loadings}{the loadings, each column is one of the new basis vectors}
+  \item{y}{if \code{compute.scores==TRUE}, this is \code{x} expressed in the new basis}
 }
 \author{
   Jochen Voss <voss@seehuhn.de>

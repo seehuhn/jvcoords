@@ -22,5 +22,10 @@ Except for this convention, I try to follow Google's `R Style Guide`_.
 Release Checklist
 -----------------
 
-  - Update ``Version`` and ``Date`` in the DESCRIPTION file.
-  - Check that the output of ``library(help=jvcoords)`` looks reasonable
+  - update ``Version`` and ``Date`` in the DESCRIPTION file
+  - check ``git status'' and remove any unnecessary files
+  - check that the current version of R is installed
+  - check that the output of ``library(help=jvcoords)`` looks reasonable
+  - build source package
+  - check that the contents of the source package look reasonable
+  - run ``R CMD check --as-cran``
