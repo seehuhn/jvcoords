@@ -24,22 +24,22 @@ library("jvcoords")
 x <- rnorm(3)
 y <- rnorm(3)
 m <- coords(p = 3)
-m <- AppendTrfm(m, "add", y)
-z <- ToCoords(m, x)
+m <- appendTrfm(m, "add", y)
+z <- toCoords(m, x)
 stopifnot(isTRUE(all.equal(x + y, z)))
 
 # test multiplication
 m <- coords(p = 3)
-m <- AppendTrfm(m, "mult", y)
-z <- ToCoords(m, x)
+m <- appendTrfm(m, "mult", y)
+z <- toCoords(m, x)
 stopifnot(isTRUE(all.equal(x * y, z)))
 
 # test orthogonal transformation
 m <- coords(p = 3)
 U <- matrix(c(1, 0, 0, 0, 1, 0), 3, 2)
-m <- AppendTrfm(m, "orth", U)
+m <- appendTrfm(m, "orth", U)
 stopifnot(m$p == 3 && m$q == 2)
-z <- ToCoords(m, x)
+z <- toCoords(m, x)
 stopifnot(isTRUE(all.equal(x[1:2], z)))
 
 # end-to-end tests
@@ -47,42 +47,40 @@ mu <- c(1, 2, 3)
 sigma <- c(4, 5, 6)
 A <- matrix(c(1, 0, 0, 0, 0, 1, 0, 1, 0), 3, 3, byrow = T)
 m1 <- coords(p = 3)
-m1 <- AppendTrfm(m1, "add", -mu)
-m1 <- AppendTrfm(m1, "mult", 1/sigma)
-m1 <- AppendTrfm(m1, "orth", A)
+m1 <- appendTrfm(m1, "add", -mu)
+m1 <- appendTrfm(m1, "mult", 1 / sigma)
+m1 <- appendTrfm(m1, "orth", A)
 
 x <- c(7, 8, 9)
-y1 <- ToCoords(m1, x)
-y2 <- as.numeric(((x - mu)/sigma) %*% A)
+y1 <- toCoords(m1, x)
+y2 <- as.numeric(((x - mu) / sigma) %*% A)
 stopifnot(isTRUE(all.equal(y1, y2)))
 
 A <- diag(1, 100, 10)
 m2 <- coords(p = nrow(A))
-m2 <- AppendTrfm(m2, "add", rnorm(nrow(A)))
-m2 <- AppendTrfm(m2, "mult", rexp(nrow(A)))
-m2 <- AppendTrfm(m2, "orth", A)
-m2 <- AppendTrfm(m2, "mult", rexp(ncol(A)))
+m2 <- appendTrfm(m2, "add", rnorm(nrow(A)))
+m2 <- appendTrfm(m2, "mult", rexp(nrow(A)))
+m2 <- appendTrfm(m2, "orth", A)
+m2 <- appendTrfm(m2, "mult", rexp(ncol(A)))
 
 A <- La.svd(matrix(rnorm(400), 20, 20))$u
 m3 <- coords(p = nrow(A))
-m3 <- AppendTrfm(m3, "add", rnorm(nrow(A)))
-m3 <- AppendTrfm(m3, "mult", rexp(nrow(A)))
-m3 <- AppendTrfm(m3, "orth", A)
-m3 <- AppendTrfm(m3, "mult", rexp(ncol(A)))
+m3 <- appendTrfm(m3, "add", rnorm(nrow(A)))
+m3 <- appendTrfm(m3, "mult", rexp(nrow(A)))
+m3 <- appendTrfm(m3, "orth", A)
+m3 <- appendTrfm(m3, "mult", rexp(ncol(A)))
 
 mm <- list(m1, m2, m3)
 for (i in seq_along(mm)) {
-    m <- mm[[i]]
-    p <- m$p
-    q <- m$q
+  m <- mm[[i]]
 
-    n <- 100
-    y <- matrix(rnorm(n * q), n, q)
-    x <- FromCoords(m, y)
-    x1 <- FromCoords(m, y[1, ])
-    stopifnot(isTRUE(all.equal(x1, x[1, ])))
-    z <- ToCoords(m, x)
-    z1 <- ToCoords(m, x[1, ])
-    stopifnot(isTRUE(all.equal(z1, z[1, ])))
-    stopifnot(isTRUE(all.equal(y, z)))
+  n <- 100
+  y <- matrix(rnorm(n * m$q), n, m$q)
+  x <- fromCoords(m, y)
+  x1 <- fromCoords(m, y[1, ])
+  stopifnot(isTRUE(all.equal(x1, x[1, ])))
+  z <- toCoords(m, x)
+  z1 <- toCoords(m, x[1, ])
+  stopifnot(isTRUE(all.equal(z1, z[1, ])))
+  stopifnot(isTRUE(all.equal(y, z)))
 }

@@ -17,23 +17,22 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 standardize <- function(x, compute.scores = TRUE) {
-    x <- as.matrix(x)
+  x <- as.matrix(x)
 
-    n <- nrow(x)
-    p <- ncol(x)
-    n.comp <- min(n - 1, p)
+  n <- nrow(x)
+  p <- ncol(x)
 
-    trfm <- coords(p, "standardize")
+  trfm <- coords(p, "standardize")
 
-    col.mean <- colMeans(x)
-    trfm <- AppendTrfm(trfm, "add", -col.mean)
+  col.mean <- colMeans(x)
+  trfm <- appendTrfm(trfm, "add", -col.mean)
 
-    col.sd <- sqrt((colSums(x^2) - col.mean^2 * n)/(n - 1))
-    trfm <- AppendTrfm(trfm, "mult", 1 / col.sd)
+  col.sd <- sqrt((colSums(x^2) - col.mean^2 * n) / (n - 1))
+  trfm <- appendTrfm(trfm, "mult", 1 / col.sd)
 
-    if (compute.scores) {
-        trfm$y <- t((t(x) - col.mean) / col.sd)
-    }
+  if (compute.scores) {
+    trfm$y <- t((t(x) - col.mean) / col.sd)
+  }
 
-    trfm
+  trfm
 }

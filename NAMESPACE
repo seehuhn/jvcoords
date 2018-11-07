@@ -1,4 +1,4 @@
-export(coords, ToCoords, FromCoords, AppendTrfm)
+export(coords, toCoords, fromCoords, appendTrfm)
 S3method(print, coords)
 
 export(standardize)

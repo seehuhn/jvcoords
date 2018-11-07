@@ -1,6 +1,6 @@
 \name{PCA}
 \alias{PCA}
-\title{perform Principal Component Analysis (PCA)}
+\title{Perform Principal Component Analysis (PCA)}
 \description{Performs a principal components analysis on the given data
   matrix and returns the results as an object of class \code{coords}.}
 \usage{
@@ -32,14 +32,12 @@
   component basis.
 }
 \value{
-  An object of class \code{coords}, as a list with the following
-  components:
-  \item{loadings}{the loadings: each column is one of the new basis vectors}
-  \item{y}{if compute.scores==TRUE, this is x expressed in the new basis}
+  An object of class \code{\link{coords}}, with the following
+  additional components added:
+  \item{loadings}{the loadings, each column is one of the new basis vectors}
+  \item{y}{if \code{compute.scores==TRUE}, this is \code{x} expressed in the new basis}
   \item{var}{the variance of the data along each of the new basis vectors}
   \item{total.var}{the total variance of the data}
-  \item{pre.sub}{the column means of the original data}
-  \item{pre.div}{the standard deviations of the original variables}
 }
 \author{
   Jochen Voss <voss@seehuhn.de>

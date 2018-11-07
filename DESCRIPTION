@@ -1,14 +1,15 @@
 Package: jvcoords
 Type: Package
 Title: Principal Component Analysis (PCA) and whitening
-Version: 0.97
-Date: 2018-03-09
+Version: 0.98
+Date: 2018-11-07
 Author: Jochen Voss
 Maintainer: Jochen Voss <voss@seehuhn.de>
+License: GPL-3
+URL: https://github.com/seehuhn/jvcoords
 Description:
   The jvcoords package provides functions to standardize and whiten
   data, and an implementation of Principal Component Analysis (PCA).
   All three transformations are implemented as a common class coords
   which allows to easily convert data from and to the new coordinate
   system.
-License: GPL-3

@@ -1,18 +1,16 @@
 \name{jvcoords-package}
 \alias{jvcoords-package}
 \docType{package}
-\title{
-  \packageTitle{jvcoords}
-}
+\title{Package overview}
 \description{
   The jvcoords package provides functions to standardize and whiten
   data, and an implementation of Principal Component Analysis (PCA).
-  All three transformations are implemented as a common class
+  All three transformations are implemented using a common class
   \verb{coords} which allows to easily convert data from and to the
-  new coordinate system.
+  new coordinate systems.
 
-  See the documentation for \code{standardize()}, \code{whiten()},
-  and \code{PCA()} for information on how to use this package.
+  See the documentation for \code{\link{standardize}}, \code{\link{whiten}},
+  and \code{\link{PCA}} for information on how to use this package.
 }
 \author{
   Jochen Voss <voss@seehuhn.de>
