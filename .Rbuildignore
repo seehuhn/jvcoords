@@ -1,2 +1,4 @@
 ^.*\.Rproj$
+^README.*\.rst$
 ^\.Rproj\.user$
+^notes$
