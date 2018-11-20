@@ -15,7 +15,7 @@
 \arguments{
   \item{p}{The number of variables in the original data.}
   \item{name}{A short name for the coordinate transformation (optional).}
-  \item{shift}{A value subtract from the data as the first step of the
+  \item{shift}{A value subtracted from the data as the first step of the
     coordinate transformation.  Usually, this will be the mean of the data
     (optional).}
   \item{trfm}{An object of class \code{coords}.}
