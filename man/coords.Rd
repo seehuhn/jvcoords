@@ -13,15 +13,19 @@
   fromCoords(trfm, y, apply.shift = TRUE)
 }
 \arguments{
-  \item{p}{The dimension of the original data}
-  \item{name}{A short name for the coordinate transformation (optional)}
-  \item{shift}{A value subtract from the data as the first step of the coordinate transformation}
-  \item{trfm}{an object of class \code{coords}}
-  \item{op}{the type of transformation to append}
-  \item{val}{data for the transformation to append}
+  \item{p}{The number of variables in the original data.}
+  \item{name}{A short name for the coordinate transformation (optional).}
+  \item{shift}{A value subtract from the data as the first step of the
+    coordinate transformation.  Usually, this will be the mean of the data
+    (optional).}
+  \item{trfm}{An object of class \code{coords}.}
+  \item{op}{The type of transformation to append.}
+  \item{val}{Data for the transformation to append.}
   \item{x}{Data matrix, rows are observations, columns are variables.}
   \item{y}{Transformed data matrix, rows are observations, columns are variables.}
-  \item{apply.shift}{Whether to apply the final shift of coordinates.}
+  \item{apply.shift}{Whether to apply the final shift of coordinates.
+    Set this to \code{FALSE} in order to only apply the linear part of the
+    transformation.}
 }
 \details{
   The function \code{coords()} creates a new object representing an affine
@@ -32,11 +36,11 @@
   objects of class \code{coords}.
 
   The function \code{appendTrfm()} modifies the transformation \code{trfm}
-  by concatenating it with a new affine transformation and returning the
-  result.  The arguments \code{op} and \code{val} specify which affine
-  transformation to append.  There are three choices for \code{op}:
+  by concatenating it with a new linear transformation and returning the
+  result.  The arguments \code{op} and \code{val} specify which kind of linear
+  transformation to append.  There are two choices for \code{op}:
   \itemize{
-  \item \code{diag} denotes multiplication by a diagonal matrix: an input
+  \item \code{diag} denotes multiplication with a diagonal matrix: an input
     vector \code{x} is mapped to the output \code{x * val}.  The scaling factor
     \code{val} can either be a vector of length \code{trfm$q} (for element-wise
     scaling), or a number.

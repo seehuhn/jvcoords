@@ -33,14 +33,13 @@ whiten <- function(x, compute.scores = TRUE) {
   cols <- which(s$d[seq_len(n.comp)] >= eps)
 
   loadings <- s$u[, cols, drop = FALSE]
-  rownames(loadings) <- colnames(x)[cols]
+  rownames(loadings) <- colnames(x)
   colnames(loadings) <- paste0("W", seq.int(ncol(loadings)))
   trfm <- appendTrfm(trfm, "orth", loadings)
 
   trfm$loadings <- loadings
 
   inv <- sqrt(n - 1) / s$d[cols]
-  names(inv) <- rownames(loadings)
   trfm <- appendTrfm(trfm, "diag", inv)
 
   if (compute.scores) {

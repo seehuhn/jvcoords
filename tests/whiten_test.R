@@ -53,3 +53,15 @@ for (x in list(X1, X2, X3, X4)) {
   stopifnot(max(abs(Y[1, ] - toCoords(s, fromCoords(s, Y[1, ])))) < 1e-10)
   cat(dim(x), "from&to vec OK\n")
 }
+
+# check that the automatic dimension reduction works
+x <- matrix(0, 50, 2)
+x[1, 2] <- 1
+cn <- c("zero", "one")
+colnames(x) <- cn
+rn <- paste0("row", 1:50)
+rownames(x) <- rn
+s <- whiten(x)
+stopifnot(s$q == 1)
+stopifnot(isTRUE(all.equal(rownames(s$loadings), cn)))
+stopifnot(isTRUE(all.equal(rownames(s$y), rn)))

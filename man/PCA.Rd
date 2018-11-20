@@ -1,7 +1,7 @@
 \name{PCA}
 \alias{PCA}
 \title{Perform Principal Component Analysis (PCA)}
-\description{Performs a principal components analysis on the given data
+\description{Performs principal components analysis on the given data
   matrix and returns the results as an object of class \code{coords}.}
 \usage{
   PCA(x, n.comp, scale = FALSE, compute.scores = TRUE)
@@ -27,15 +27,15 @@
   The \code{PCA()} function is an alternative to
   the \code{prcomp()} command from the standard library.
   The main advantage of \code{PCA()} is that the \code{coords}
-  class provides
-  functions to convert between the original basis and the principal
-  component basis.
+  class provides functions to convert between the original basis and the
+  principal component basis.
 }
 \value{
   An object of class \code{\link{coords}}, with the following
   additional components added:
   \item{loadings}{the loadings, each column is one of the new basis vectors}
-  \item{y}{if \code{compute.scores==TRUE}, this is \code{x} expressed in the new basis}
+  \item{y}{if \code{compute.scores==TRUE}, this is \code{x} expressed in the
+    new basis}
   \item{var}{the variance of the data along each of the new basis vectors}
   \item{total.var}{the total variance of the data}
 }
@@ -47,7 +47,7 @@
   alternative implementations: \code{\link{prcomp}}, \code{\link{princomp}}
 }
 \examples{
-  pc <- PCA(iris[,1:4], scale=TRUE)
+  pc <- PCA(iris[,1:4], scale = TRUE, n.comp = 2)
   pc
-  plot(pc$y[,1], pc$y[,2], col=iris$Species)
+  plot(pc$y, col=iris$Species)
 }
