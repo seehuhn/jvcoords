@@ -22,13 +22,12 @@ standardize <- function(x, compute.scores = TRUE) {
   n <- nrow(x)
   p <- ncol(x)
 
-  trfm <- coords(p, "standardize")
-
   col.mean <- colMeans(x)
-  trfm <- appendTrfm(trfm, "add", -col.mean)
+
+  trfm <- coords(p, "standardize", shift = col.mean)
 
   col.sd <- sqrt((colSums(x^2) - col.mean^2 * n) / (n - 1))
-  trfm <- appendTrfm(trfm, "mult", 1 / col.sd)
+  trfm <- appendTrfm(trfm, "diag", 1 / col.sd)
 
   if (compute.scores) {
     trfm$y <- t((t(x) - col.mean) / col.sd)

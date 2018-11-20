@@ -28,16 +28,15 @@ PCA <- function(x, n.comp, scale = FALSE, compute.scores = TRUE) {
     stopifnot(n.comp <= max.comp)
   }
 
-  trfm <- coords(p, "PCA")
-
   col.mean <- colMeans(x)
   xt <- t(x) - col.mean
-  trfm <- appendTrfm(trfm, "add", -col.mean)
+
+  trfm <- coords(p, "PCA", shift = col.mean)
 
   if (scale) {
     col.sd <- sqrt((colSums(x^2) - col.mean^2 * n) / (n - 1))
     xt <- xt / col.sd
-    trfm <- appendTrfm(trfm, "mult", 1 / col.sd)
+    trfm <- appendTrfm(trfm, "diag", 1 / col.sd)
   }
 
   s <- La.svd(xt, nu = n.comp, nv = 0)

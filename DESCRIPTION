@@ -1,8 +1,8 @@
 Package: jvcoords
 Type: Package
 Title: Principal Component Analysis (PCA) and Whitening
-Version: 0.98
-Date: 2018-11-07
+Version: 0.99
+Date: 2018-11-20
 Authors@R: person("Jochen", "Voss", email="voss@seehuhn.de",
 		  role=c("aut", "cre"),
 		  comment = c(ORCID = "0000-0002-2323-3814"))
@@ -17,5 +17,5 @@ Description:
   a class 'coords', which can represent affine coordinate
   transformations.  This class forms the basis of the transformations
   provided by the package, but can also be used independently.  The
-  implementation has been optimized to be of comparable speed (or
+  implementation has been optimized to be of comparable speed (and
   sometimes even faster) than existing alternatives.

@@ -16,13 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-coords <- function(p, name=NULL) {
-  res <- list(name=name, p=p, q=p, cmds=list())
+coords <- function(p, name=NULL, shift=0) {
+  res <- list(name=name, p=p, q=p, shift=shift, cmds=list())
   class(res) <- "coords"
   res
 }
 
-appendTrfm <- function(trfm, op=c("add", "mult", "orth"), val) {
+appendTrfm <- function(trfm, op=c("diag", "orth"), val) {
   op <- match.arg(op)
   if (op == "orth") {
     trfm$q <- ncol(val)
@@ -36,21 +36,22 @@ appendTrfm <- function(trfm, op=c("add", "mult", "orth"), val) {
 
 toCoords <- function(trfm, x) {
   if (is.null(dim(x))) {
+    # assume that x is a vector
     stopifnot(length(x) == trfm$p)
+    x <- x - trfm$shift
     for (cmd in trfm$cmds) {
       val <- cmd[[2]]
       x <- switch(cmd[[1]],
-                  add = x + val,
-                  mult = x * val,
+                  diag = x * val,
                   orth = (x %*% val)[1, ])
     }
   } else {
-    xt <- t(x)
+    # x is a matrix
+    xt <- t(x) - trfm$shift
     for (cmd in trfm$cmds) {
       val <- cmd[[2]]
       xt <- switch(cmd[[1]],
-                   add = xt + val,
-                   mult = xt * val,
+                   diag = xt * val,
                    orth = crossprod(val, xt))
     }
     x <- t(xt)
@@ -58,24 +59,30 @@ toCoords <- function(trfm, x) {
   x
 }
 
-fromCoords <- function(trfm, y) {
+fromCoords <- function(trfm, y, apply.shift=TRUE) {
   if (is.null(dim(y))) {
+    # assume that y is a vector
     stopifnot(length(y) == trfm$q)
     for (cmd in rev(trfm$cmds)) {
       val <- cmd[[2]]
       y <- switch(cmd[[1]],
-                  add = y - val,
-                  mult = y / val,
+                  diag = y / val,
                   orth = (val %*% y)[, 1])
     }
+    if (apply.shift) {
+      y <- y + trfm$shift
+    }
   } else {
+    # y is a matrix
     yt <- t(y)
     for (cmd in rev(trfm$cmds)) {
       val <- cmd[[2]]
       yt <- switch(cmd[[1]],
-                   add = yt - val,
-                   mult = yt / val,
+                   diag = yt / val,
                    orth = val %*% yt)
+    }
+    if (apply.shift) {
+      yt <- yt + trfm$shift
     }
     y <- t(yt)
   }
