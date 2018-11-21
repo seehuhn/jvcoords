@@ -28,29 +28,13 @@
     transformation.}
 }
 \details{
-  The function \code{coords()} creates a new object representing an affine
-  coordinate transformation.  Initially, the object represents a shift of
-  vectors vectors of length \code{p} by the amount \code{shift}.  The function
-  \code{appendTrfm()} can be used to modify the transformation as needed.
-  The optional argument \code{name}, if set, is used when printing
-  objects of class \code{coords}.
-
-  The function \code{appendTrfm()} modifies the transformation \code{trfm}
-  by concatenating it with a new linear transformation and returning the
-  result.  The arguments \code{op} and \code{val} specify which kind of linear
-  transformation to append.  There are two choices for \code{op}:
-  \itemize{
-  \item \code{diag} denotes multiplication with a diagonal matrix: an input
-    vector \code{x} is mapped to the output \code{x * val}.  The scaling factor
-    \code{val} can either be a vector of length \code{trfm$q} (for element-wise
-    scaling), or a number.
-  \item \code{orth} denotes multiplication with an orthogonal matrix.
-    \code{val} must be a matrix with orthogonal columns (not necessarily
-    square) and \code{trfm$q} rows.  An input vector \code{x} is mapped
-    to the output \code{x \%*\% orth}.
-  }
-  The new transformation is applied after any other transformations
-  already associated with \code{trfm}.
+  The function \code{coords()} creates a new object representing an
+  affine coordinate transformation.  Initially, the object represents a
+  shift by the amount \code{shift}, mapping \code{p}-dimensional vectors
+  \code{x} to \code{x-shift}.  The function \code{appendTrfm()} can then
+  be used to modify the transformation.  The optional argument
+  \code{name}, if set, is used when printing objects of class
+  \code{coords}.
 
   The function \code{toCoords()} applies the affine transformation \code{trfm}
   to the data \code{x}.  The data \code{x} must either be a vector of
@@ -66,6 +50,23 @@
   The argument \code{apply.shift} can be set to false to apply only
   the linear part of the (inverse) transformation, leaving out the
   final shift.
+
+  The function \code{appendTrfm()} concatenates \code{trfm} with an
+  additional, linear transformation and returns the result.  The
+  arguments \code{op} and \code{val} specify which kind of linear
+  transformation to append.  There are two choices for \code{op}:
+  \itemize{
+  \item \code{diag} denotes multiplication with a diagonal matrix: an input
+    vector \code{x} is mapped to the output \code{x * val}.  The scaling factor
+    \code{val} can either be a vector of length \code{trfm$q} (for element-wise
+    scaling), or a number.
+  \item \code{orth} denotes multiplication with an orthogonal matrix.
+    \code{val} must be a matrix with orthogonal columns (not necessarily
+    square) and \code{trfm$q} rows.  An input vector \code{x} is mapped
+    to the output \code{x \%*\% orth}.
+  }
+  The new transformation is applied after any other transformations
+  already associated with \code{trfm}.
 }
 \value{
   An object of class \code{coords}, as a list with the following
@@ -85,7 +86,7 @@
   \code{\link{PCA}}
 }
 \examples{
-  pc <- PCA(iris[,1:4], n.comp=3)
+  pc <- PCA(iris[, 1:4], n.comp = 3)
   toCoords(pc, c(5, 3, 4, 1))
   fromCoords(pc, c(1, 0, 0))
 }
