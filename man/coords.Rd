@@ -1,4 +1,3 @@
-\encoding{UTF-8}
 \name{coords}
 \alias{coords}
 \alias{appendTrfm}
@@ -37,15 +36,15 @@
   \code{coords}.
 
   The function \code{toCoords()} applies the affine transformation \code{trfm}
-  to the data \code{x}.  The data \code{x} must either be a vector of
-  length \code{trfm$p}, in which case the result is a vector of
-  length \code{trfm$q}, or a matrix with \code{trfm$p} columns, in which case
+  to the data \code{x}.  The data \code{x} must either be a vector of
+  length \code{trfm$p}, in which case the result is a vector of
+  length \code{trfm$q}, or a matrix with \code{trfm$p} columns, in which case
   the transformation is applied to each row of the matrix separately.
 
   The function \code{fromCoords()} implements the inverse transform
   to \code{toCoords()}.  The output always satisfies
   \code{toCoords(trfm, fromCoords(trfm, y)) == y}.  If
-  \code{trfm$p == trfm$q}, \emph{i.e.} if the transformation is bijective,
+  \code{trfm$p == trfm$q}, \emph{i.e.} if the transformation is bijective,
   the \code{fromCoords(trfm, toCoords(trfm, x)) == x} also holds.
   The argument \code{apply.shift} can be set to false to apply only
   the linear part of the (inverse) transformation, leaving out the
@@ -66,7 +65,7 @@
     to the output \code{x \%*\% orth}.
   }
   The new transformation is applied after any other transformations
-  already associated with \code{trfm}.
+  already associated with \code{trfm}.
 }
 \value{
   An object of class \code{coords}, as a list with the following

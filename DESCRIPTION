@@ -1,8 +1,8 @@
 Package: jvcoords
 Type: Package
 Title: Principal Component Analysis (PCA) and Whitening
-Version: 1.0.0
-Date: 2018-11-21
+Version: 1.0.1
+Date: 2018-12-04
 Authors@R: person("Jochen", "Voss", email="voss@seehuhn.de",
 		  role=c("aut", "cre"),
 		  comment = c(ORCID = "0000-0002-2323-3814"))
