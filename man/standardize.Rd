@@ -13,7 +13,7 @@
 }
 \details{
   This function standardizes the columns of \code{x} by subtracting the
-  mean of each column and then dividing by the standard devition.  The
+  mean of each column and then dividing by the standard deviation.  The
   transformed data is stored in the \code{$y} field of the returned
   \code{coords} object.
 
