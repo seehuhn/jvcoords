@@ -15,12 +15,10 @@
 \author{
   Jochen Voss <voss@seehuhn.de>
 }
-\keyword{
-  package
-  math
-  array
-  multivariate
-}
+\keyword{math}
+\keyword{array}
+\keyword{package}
+\concept{multivariate}
 \seealso{
   \code{\link{standardize}},
   \code{\link{whiten}},

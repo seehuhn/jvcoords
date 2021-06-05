@@ -1,0 +1,17 @@
+version 1.0.3 (2021-06-05)
+--------------------------
+
+* fix a minor bug in the unit tests
+* fix the keywords in jvcoords-package.Rd
+* add a NEWS file
+
+version 1.0.2 (2018-12-09)
+--------------------------
+
+* cosmetic fixes
+* first version on CRAN
+
+version 1.0.0 (2018-11-21)
+--------------------------
+
+* first published version
